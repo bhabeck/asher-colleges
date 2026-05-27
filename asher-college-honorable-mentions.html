@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asher's College List — Also Considered</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f2f7;
+    --card: #1e2333;
+    --border: #2a3045;
+    --surface: #181c27;
+    --text: #e8eaf0;
+    --muted: #7b839a;
+    --green: #4ade80;
+    --blue: #60a5fa;
+    --amber: #f59e0b;
+    --red: #f87171;
+    --purple: #a78bfa;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: #1a2035;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #1a2035 0%, #2563eb 60%, #dc2626 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  header p {
+    color: #6b7694;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    color: #6b7694;
+    font-size: 0.85rem;
+    max-width: 560px;
+    margin: 0 auto 36px;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    max-width: 960px;
+    margin: 36px auto 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 999px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .badge-maybe   { background: rgba(245,158,11,0.15); color: var(--amber); border: 1px solid rgba(245,158,11,0.3); }
+  .badge-ruledout{ background: rgba(248,113,113,0.15); color: var(--red);   border: 1px solid rgba(248,113,113,0.3); }
+
+  .section-line  { flex: 1; height: 1px; background: #d1d5db; }
+
+  .section-desc {
+    max-width: 960px;
+    margin: 0 auto 18px;
+    font-size: 0.82rem;
+    color: #6b7694;
+    line-height: 1.55;
+  }
+
+  /* ── SCHOOL CARD ── */
+  .card {
+    max-width: 960px;
+    margin: 0 auto 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  }
+
+  /* Card header */
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 14px 18px 10px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .school-num   { font-size: 0.7rem; font-weight: 600; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+  .school-name  { font-size: 1.15rem; font-weight: 800; color: var(--text); line-height: 1.2; }
+  .school-loc   { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+
+  .lax-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+
+  .lax-d3    { background: rgba(74,222,128,0.15);  color: var(--green);  border: 1px solid rgba(74,222,128,0.3); }
+  .lax-d2    { background: rgba(96,165,250,0.15);  color: var(--blue);   border: 1px solid rgba(96,165,250,0.3); }
+  .lax-club  { background: rgba(245,158,11,0.15);  color: var(--amber);  border: 1px solid rgba(245,158,11,0.3); }
+  .lax-none  { background: rgba(248,113,113,0.12); color: var(--red);    border: 1px solid rgba(248,113,113,0.25); }
+
+  /* Stats strip */
+  .stats-strip {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+    flex-wrap: wrap;
+  }
+
+  .stat-cell {
+    flex: 1;
+    min-width: 110px;
+    padding: 8px 14px;
+    border-right: 1px solid var(--border);
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-label { font-size: 0.65rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .stat-value { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+
+  /* Rating + pros/cons body */
+  .card-body {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .ratings-col {
+    width: 220px;
+    flex-shrink: 0;
+    padding: 12px 16px;
+    border-right: 1px solid var(--border);
+  }
+
+  .rating-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .rating-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    width: 72px;
+    flex-shrink: 0;
+  }
+  .rating-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 0 8px;
+  }
+  .rating-fill { height: 100%; border-radius: 999px; }
+  .fill-green { background: linear-gradient(90deg,#16a34a,#4ade80); }
+  .fill-blue  { background: linear-gradient(90deg,#2563eb,#60a5fa); }
+  .fill-amber { background: linear-gradient(90deg,#d97706,#fbbf24); }
+  .rating-score { font-size: 0.75rem; font-weight: 700; color: var(--text); width: 16px; text-align: right; }
+
+  /* Pros / cons */
+  .pros-cons-col {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .pros-col, .cons-col {
+    flex: 1;
+    min-width: 180px;
+    padding: 12px 16px;
+  }
+  .pros-col { border-right: 1px solid var(--border); }
+
+  .pc-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .pros-col .pc-label { color: var(--green); }
+  .cons-col .pc-label { color: var(--red); }
+
+  .pc-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.45;
+    margin-bottom: 6px;
+  }
+  .pc-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+  .dot-green { background: var(--green); }
+  .dot-red   { background: var(--red); }
+
+  /* Footer */
+  .card-footer {
+    padding: 7px 18px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .card-footer a { color: var(--blue); text-decoration: none; }
+  .card-footer a:hover { text-decoration: underline; }
+
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.8rem;
+    color: #9ba3c0;
+  }
+  footer a { color: #60a5fa; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Also Considered</h1>
+  <p>Asher's College Search · Schools That Didn't Make the Final List</p>
+</header>
+<p class="subtitle">10 schools came up during the search. Here's what was compelling about each — and what knocked them off the list.</p>
+
+<!-- ══════════════════════════════════════════
+     MAYBE CATEGORY
+═══════════════════════════════════════════ -->
+<div class="section-header">
+  <span class="section-badge badge-maybe">🤔 Maybe — Worth Revisiting</span>
+  <div class="section-line"></div>
+</div>
+<p class="section-desc" style="max-width:960px;">These schools hit several of Asher's criteria well but have one meaningful gap that kept them off the main list. Not ruled out — just not quite there yet. Worth a second look if priorities shift.</p>
+
+<!-- COVENANT -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">M1</div>
+      <div class="school-name">Covenant College</div>
+      <div class="school-loc">Lookout Mountain, GA · 90 min from Cumming</div>
+    </div>
+    <span class="lax-none">No Men's Lacrosse</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~1,100</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$25K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">87%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">~90 min ✓</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:0%"></div></div><span class="rating-score">0</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:80%"></div></div><span class="rating-score">4</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Mountaintop campus — literally on Lookout Mountain, hiking and climbing out the door</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Deepest Reformed Christian identity of any school considered — faith is the whole culture</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Closest private Christian school to Cumming (~90 min) — easy visits</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Affordable net price (~$25K/yr) with strong merit aid</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Very small (1,100 students) — everyone knows everyone</div>
+      </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>No men's lacrosse — not even an established club</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Very specific Reformed/Presbyterian theological culture — not for everyone</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Tiny size could feel limiting socially — some students find it a fishbowl</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Limited business program options compared to larger schools</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"><a href="https://www.covenant.edu" target="_blank">covenant.edu</a></div>
+</div>
+
+<!-- COLORADO CHRISTIAN -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">M2</div>
+      <div class="school-name">Colorado Christian University</div>
+      <div class="school-loc">Lakewood, CO · Front Range of the Rockies</div>
+    </div>
+    <span class="lax-none">No Men's Lacrosse</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~5,000</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$27K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">57%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">Flight</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:0%"></div></div><span class="rating-score">0</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:60%"></div></div><span class="rating-score">3</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Front Range of the Rockies — hiking, skiing, climbing literally out the front door</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Strong evangelical Christian institutional identity</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Denver metro access — big city resources with mountain lifestyle</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Moderate acceptance rate (57%) — not a reach</div>
+      </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>No men's lacrosse at all — NCAA D2 with only 13 varsity sports</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Much larger than other Christian schools on the list (~5,000 students)</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Not a traditional liberal arts experience — more comprehensive university feel</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Flight required from Atlanta — no easy campus visits</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"><a href="https://www.ccu.edu" target="_blank">ccu.edu</a></div>
+</div>
+
+<!-- FURMAN -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">M3</div>
+      <div class="school-name">Furman University</div>
+      <div class="school-loc">Greenville, SC · Blue Ridge Mountain foothills</div>
+    </div>
+    <span class="lax-none">No Men's Lacrosse</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~2,554</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$34K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">43%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">~2 hrs ✓</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:72%"></div></div><span class="rating-score">4</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:0%"></div></div><span class="rating-score">0</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:88%"></div></div><span class="rating-score">5</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>One of the most beautiful campuses in the South — lake on campus, Blue Ridge backdrop</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Greenville, SC is a fantastic, outdoorsy college city — Paris Mountain State Park nearby</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Academically strong liberal arts (43% acceptance — most selective on this list)</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Easy drive from Cumming (~2 hrs)</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Baptist Christian heritage, broadly open campus culture</div>
+      </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>No men's lacrosse — has women's but confirmed no men's varsity program</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Most academically selective school on either list — real filter</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Net price (~$34K) on the higher end for what you get vs. comparable schools</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Christian culture more heritage than active — less faith-integrated than Sewanee or Covenant</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"><a href="https://www.furman.edu" target="_blank">furman.edu</a></div>
+</div>
+
+<!-- TEXAS A&M -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">M4</div>
+      <div class="school-name">Texas A&amp;M University</div>
+      <div class="school-loc">College Station, TX · Central Texas</div>
+    </div>
+    <span class="lax-club">Club Lacrosse</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~78,000</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr (OOS)</div><div class="stat-value">~$49K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">57%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">~10 hrs / Flight</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:60%"></div></div><span class="rating-score">3</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:80%"></div></div><span class="rating-score">4</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:40%"></div></div><span class="rating-score">2</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:88%"></div></div><span class="rating-score">5</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Breakaway Ministries — largest college Bible study in the country, faith culture is genuine and massive</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Elite business school — one of the best BBAs in the country</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Active club lacrosse, ranch and Texas outdoors lifestyle</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Out-of-state net price (~$49K) surprisingly reasonable for a flagship</div>
+      </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>78,000 students — completely different college experience than everything else on the list</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Club lacrosse only — no real playing pathway</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Outdoor culture skews ranch/plains — no mountains, trails, or adventure culture on campus</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Far from Atlanta — 10+ hour drive or flight required</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"><a href="https://www.tamu.edu" target="_blank">tamu.edu</a></div>
+</div>
+
+<!-- BAYLOR -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">M5</div>
+      <div class="school-name">Baylor University</div>
+      <div class="school-loc">Waco, TX · Central Texas</div>
+    </div>
+    <span class="lax-club">Club Lacrosse</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~15,000</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$47K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">51%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">~12 hrs / Flight</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:60%"></div></div><span class="rating-score">3</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:80%"></div></div><span class="rating-score">4</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:40%"></div></div><span class="rating-score">2</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:88%"></div></div><span class="rating-score">5</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Genuine Baptist Christian identity — faith is woven into academic culture, not just extracurricular</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Highly ranked BBA — one of the strongest business programs in Texas</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Waco has genuinely grown — great college city energy now</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Hill Country an hour away for outdoor day trips</div>
+      </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Club lacrosse only — no varsity pathway</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Net price (~$47K) is the most expensive on either list after aid</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Outdoor culture is limited on campus — Hill Country is nearby but not baked into student life</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Far from Atlanta and an overall weaker fit than the main list schools</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"><a href="https://www.baylor.edu" target="_blank">baylor.edu</a></div>
+</div>
+
+<!-- UNIVERSITY OF DENVER -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">M6</div>
+      <div class="school-name">University of Denver</div>
+      <div class="school-loc">Denver, CO · Rocky Mountain Front Range</div>
+    </div>
+    <span class="lax-d3" style="background:rgba(74,222,128,0.15);color:#4ade80;border:1px solid rgba(74,222,128,0.3);">D1 Lacrosse (Powerhouse)</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~13,000</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$43K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">71%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">Flight</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:40%"></div></div><span class="rating-score">2</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:80%"></div></div><span class="rating-score">4</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>D1 lacrosse powerhouse — one of the elite programs in the country</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Denver/Rockies setting — skiing, hiking, climbing all within an hour</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Strong academics and business school</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Active faith communities on campus even without institutional Christian identity</div>
+      </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>No Christian institutional identity — secular private university</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>D1 lacrosse is so competitive that a walk-on playing opportunity is unlikely without a scholarship offer</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Net price (~$43K) is high for a school that misses on Christian culture</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Flight required from Atlanta — no quick visits</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"><a href="https://www.du.edu" target="_blank">du.edu</a></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     RULED OUT CATEGORY
+═══════════════════════════════════════════ -->
+<div class="section-header" style="margin-top:48px;">
+  <span class="section-badge badge-ruledout">❌ Ruled Out</span>
+  <div class="section-line"></div>
+</div>
+<p class="section-desc" style="max-width:960px;">These schools have multiple gaps against Asher's priorities and aren't a strong overall fit. Not worth the visit list.</p>
+
+<!-- POINT LOMA -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">R1</div>
+      <div class="school-name">Point Loma Nazarene University</div>
+      <div class="school-loc">San Diego, CA · Pacific Coast</div>
+    </div>
+    <span class="lax-none">No Real Lacrosse Program</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~3,400</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$32K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">~75%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">Flight</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:80%"></div></div><span class="rating-score">4</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:0%"></div></div><span class="rating-score">0</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:60%"></div></div><span class="rating-score">3</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Stunning San Diego coastal campus — cliffs, Pacific views, beach culture</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Deeply Nazarene Christian with mandatory chapel — genuine faith culture</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Surf, beach volleyball, warm weather year-round outdoor lifestyle</div>
+      </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Men's lacrosse page literally says "more information coming soon" — not a real program</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>No mountains, trails, or adventure outdoor culture — flat coastal only</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Flight required and far from home with no clear lacrosse opportunity</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"><a href="https://www.pointloma.edu" target="_blank">pointloma.edu</a></div>
+</div>
+
+<!-- WHEATON -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">R2</div>
+      <div class="school-name">Wheaton College</div>
+      <div class="school-loc">Wheaton, IL · Suburban Chicago</div>
+    </div>
+    <span class="lax-d3">D3 Lacrosse</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~2,800</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$31K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">88%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">Flight</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:40%"></div></div><span class="rating-score">2</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:60%"></div></div><span class="rating-score">3</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:100%"></div></div><span class="rating-score">5</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Gold standard evangelical Christian liberal arts — faith culture is unmatched</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>D3 lacrosse program exists and is competitive</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Academically excellent — one of the top Christian colleges in the country</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Strong outdoor rec club — students do travel for adventures</div>
+      </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Flat suburban Chicago — no outdoor culture on or near campus</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Cold Midwest winters — a real lifestyle miss vs. Asher's outdoor priorities</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Academically intense environment — high expectations inside the classroom</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Flight required from Atlanta, far from home</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"><a href="https://www.wheaton.edu" target="_blank">wheaton.edu</a></div>
+</div>
+
+<!-- SAMFORD -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">R3</div>
+      <div class="school-name">Samford University</div>
+      <div class="school-loc">Birmingham, AL · Southeast</div>
+    </div>
+    <span class="lax-club">Club Lacrosse Only</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~5,700</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$28K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">~80%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">~2 hrs ✓</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:60%"></div></div><span class="rating-score">3</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:80%"></div></div><span class="rating-score">4</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:20%"></div></div><span class="rating-score">1</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:72%"></div></div><span class="rating-score">4</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Good Baptist Christian identity, faith integrated into campus culture</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Solid academic programs including strong business and pre-professional tracks</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Easy drive from Atlanta (~2 hrs)</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Birmingham has outdoor access to Cheaha and Alabama/Tennessee trails</div>
+      </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Club lacrosse only in a D1 environment — no real playing pathway</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Outdoor culture is not embedded in student life — it's just "nearby"</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Outcompeted by closer schools (Sewanee, Mars Hill) that hit more boxes simultaneously</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Birmingham setting doesn't inspire the same outdoorsy campus lifestyle as mountain schools</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"><a href="https://www.samford.edu" target="_blank">samford.edu</a></div>
+</div>
+
+<!-- CORNERSTONE -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">R4</div>
+      <div class="school-name">Cornerstone University</div>
+      <div class="school-loc">Grand Rapids, MI · Midwest</div>
+    </div>
+    <span class="lax-none">No Lacrosse</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~1,400</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$22K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">~75%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">~12 hrs / Flight</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:40%"></div></div><span class="rating-score">2</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:0%"></div></div><span class="rating-score">0</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:60%"></div></div><span class="rating-score">3</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Ben's alma mater — deeply nondenominational Christian culture with strong community feel 😄</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Affordable net price (~$22K/yr)</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Tight-knit small school with high faculty engagement</div>
+      </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>No lacrosse — not even club</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Grand Rapids is flat, landlocked, and cold — zero outdoor adventure culture</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Far from Atlanta — long drive or flight with no compelling draw</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Misses on the two things Asher cares most about: outdoors and lacrosse</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer"><a href="https://www.cornerstone.edu" target="_blank">cornerstone.edu</a> &nbsp;·&nbsp; <em>The alma mater always gets included. 😄</em></div>
+</div>
+
+<footer>
+  <p>Part of Asher's College Search · See the main comparison at <a href="asher-college-comparison.html">asher-college-comparison.html</a></p>
+</footer>
+
+</body>
+</html>
