@@ -7,23 +7,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f1117;
-    --surface: #181c27;
+    --bg: #f0f2f7;
     --card: #1e2333;
     --border: #2a3045;
-    --accent: #4ade80;
-    --accent2: #60a5fa;
-    --accent3: #f59e0b;
+    --surface: #181c27;
     --text: #e8eaf0;
     --muted: #7b839a;
+    --green: #4ade80;
+    --blue: #60a5fa;
+    --amber: #f59e0b;
     --red: #f87171;
+    --purple: #a78bfa;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background: #f0f2f7;
-    color: var(--text);
+    background: var(--bg);
+    color: #1a2035;
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
     padding: 40px 20px 80px;
@@ -31,7 +32,7 @@
 
   header {
     text-align: center;
-    margin-bottom: 48px;
+    margin-bottom: 40px;
   }
 
   header h1 {
@@ -47,257 +48,202 @@
 
   header p {
     color: #6b7694;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
-  .legend {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    flex-wrap: wrap;
-    margin-bottom: 36px;
-  }
-
-  .legend-item {
+  /* ── TIER HEADER ── */
+  .tier-header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.82rem;
-    color: #6b7694;
+    gap: 14px;
+    margin: 32px auto 16px;
+    max-width: 960px;
   }
 
-  .dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
+  .tier-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 999px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    white-space: nowrap;
   }
 
-  .dot-green { background: var(--accent); }
-  .dot-yellow { background: var(--accent3); }
-  .dot-red { background: var(--red); }
+  .tier-1 { background: rgba(74,222,128,0.15); color: var(--green); border: 1px solid rgba(74,222,128,0.3); }
+  .tier-2 { background: rgba(96,165,250,0.15); color: var(--blue);  border: 1px solid rgba(96,165,250,0.3); }
+  .tier-3 { background: rgba(245,158,11,0.15); color: var(--amber); border: 1px solid rgba(245,158,11,0.3); }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
+  .tier-line { flex: 1; height: 1px; background: #d1d5db; }
 
+  /* ── CARD ── */
   .card {
+    max-width: 960px;
+    margin: 0 auto 20px;
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 14px;
     overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    position: relative;
   }
 
   .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 32px rgba(0,0,0,0.2);
   }
 
-  .card-header {
-    padding: 22px 22px 16px;
+  /* Card top */
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px 20px 12px;
     border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-
-  .badge {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 999px;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .badge-d3 { background: rgba(74, 222, 128, 0.15); color: var(--accent); border: 1px solid rgba(74,222,128,0.3); }
-  .badge-club { background: rgba(96, 165, 250, 0.15); color: var(--accent2); border: 1px solid rgba(96,165,250,0.3); }
-
-  .school-num {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .school-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 4px;
-  }
-
-  .school-location {
-    font-size: 0.82rem;
-    color: var(--muted);
-  }
-
-  .card-body {
-    padding: 18px 22px;
-  }
-
-  .stats-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 18px;
-  }
-
-  .stat {
     background: var(--surface);
-    border-radius: 10px;
-    padding: 10px 12px;
   }
 
-  .stat-label {
+  .school-num   { font-size: 0.7rem; font-weight: 600; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 3px; }
+  .school-name  { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+  .school-loc   { font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+
+  .lax-badge {
     font-size: 0.68rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 4px;
+    font-weight: 700;
+    padding: 4px 11px;
+    border-radius: 999px;
+    white-space: nowrap;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+  .lax-d3   { background: rgba(74,222,128,0.15);  color: var(--green); border: 1px solid rgba(74,222,128,0.3); }
+  .lax-d2   { background: rgba(96,165,250,0.15);  color: var(--blue);  border: 1px solid rgba(96,165,250,0.3); }
+  .lax-club { background: rgba(245,158,11,0.15);  color: var(--amber); border: 1px solid rgba(245,158,11,0.3); }
+
+  /* Stats strip */
+  .stats-strip {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+    flex-wrap: wrap;
+  }
+  .stat-cell {
+    flex: 1;
+    min-width: 100px;
+    padding: 9px 14px;
+    border-right: 1px solid var(--border);
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-label { font-size: 0.65rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .stat-value { font-size: 0.92rem; font-weight: 700; color: var(--text); }
+
+  /* Body: ratings + pros/cons */
+  .card-body {
+    display: flex;
+    flex-wrap: wrap;
   }
 
-  .stat-value {
-    font-size: 0.92rem;
-    font-weight: 600;
-    color: var(--text);
-  }
-
-  .ratings {
-    margin-bottom: 18px;
+  .ratings-col {
+    width: 210px;
+    flex-shrink: 0;
+    padding: 14px 16px;
+    border-right: 1px solid var(--border);
   }
 
   .rating-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     margin-bottom: 9px;
   }
-
   .rating-label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--muted);
-    width: 90px;
+    width: 72px;
     flex-shrink: 0;
   }
-
-  .rating-bar-wrap {
+  .rating-track {
     flex: 1;
     height: 6px;
-    background: var(--surface);
+    background: rgba(255,255,255,0.08);
     border-radius: 999px;
     overflow: hidden;
-    margin: 0 12px;
+    margin: 0 8px;
   }
+  .rating-fill { height: 100%; border-radius: 999px; }
+  .fill-green { background: linear-gradient(90deg,#16a34a,#4ade80); }
+  .fill-blue  { background: linear-gradient(90deg,#2563eb,#60a5fa); }
+  .fill-amber { background: linear-gradient(90deg,#d97706,#fbbf24); }
+  .rating-score { font-size: 0.75rem; font-weight: 700; color: var(--text); width: 16px; text-align: right; }
 
-  .rating-bar {
-    height: 100%;
-    border-radius: 999px;
-    transition: width 0.6s ease;
-  }
-
-  .bar-green { background: linear-gradient(90deg, #4ade80, #22d3ee); }
-  .bar-blue { background: linear-gradient(90deg, #60a5fa, #818cf8); }
-  .bar-amber { background: linear-gradient(90deg, #f59e0b, #f97316); }
-
-  .rating-score {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--text);
-    width: 20px;
-    text-align: right;
-  }
-
-  .tags {
+  /* Pros / cons */
+  .pros-cons-col {
+    flex: 1;
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 16px;
   }
 
-  .tag {
-    font-size: 0.72rem;
-    padding: 3px 9px;
-    border-radius: 999px;
-    background: var(--surface);
+  .pros-col, .cons-col {
+    flex: 1;
+    min-width: 180px;
+    padding: 14px 16px;
+  }
+  .pros-col { border-right: 1px solid var(--border); }
+
+  .pc-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 9px;
+  }
+  .pros-col .pc-label { color: var(--green); }
+  .cons-col .pc-label { color: var(--red); }
+
+  .pc-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    font-size: 0.78rem;
     color: var(--muted);
-    border: 1px solid var(--border);
+    line-height: 1.45;
+    margin-bottom: 7px;
   }
-
-  .tag-highlight {
-    background: rgba(74,222,128,0.08);
-    color: var(--accent);
-    border-color: rgba(74,222,128,0.2);
+  .pc-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 5px;
   }
+  .dot-green { background: var(--green); }
+  .dot-red   { background: var(--red); }
 
-  .notes {
+  /* Bottom line + footer */
+  .bottom-line {
+    padding: 12px 16px 14px;
+    border-top: 1px solid var(--border);
     font-size: 0.8rem;
     color: var(--muted);
     line-height: 1.55;
+    background: rgba(255,255,255,0.02);
+  }
+  .bottom-line strong { color: var(--text); }
+
+  .card-footer {
+    padding: 8px 20px;
+    background: var(--surface);
     border-top: 1px solid var(--border);
-    padding-top: 14px;
-  }
-
-  .notes strong {
-    color: var(--text);
-  }
-
-  .card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    margin-top: 10px;
     font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--accent2);
-    text-decoration: none;
-    opacity: 0.85;
-    transition: opacity 0.2s ease;
+    font-style: italic;
+    color: var(--muted);
   }
-  .card-link:hover { opacity: 1; text-decoration: underline; }
-  .card-link::before {
-    content: '🔗';
-    font-size: 0.7rem;
-  }
+  .card-footer a { color: var(--blue); text-decoration: none; }
+  .card-footer a:hover { text-decoration: underline; }
 
-  .cost-indicator {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .cost-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-  }
-
-  .tier-header {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    color: #4b5370;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    margin: 32px 0 14px;
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 12px;
-    border-left: 3px solid var(--accent);
-  }
-
+  /* ── QUICK REFERENCE TABLE ── */
   .summary-table {
-    max-width: 1400px;
+    max-width: 960px;
     margin: 48px auto 0;
     background: var(--card);
     border: 1px solid var(--border);
@@ -312,45 +258,35 @@
 
   .summary-table h2 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    padding: 22px 28px 18px;
+    font-size: 1.3rem;
+    padding: 20px 24px 16px;
     border-bottom: 1px solid var(--border);
     color: var(--text);
   }
 
-  .summary-table h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    padding: 22px 28px 18px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.82rem;
-  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
 
   th {
     padding: 10px 14px;
     text-align: left;
     color: var(--muted);
-    font-weight: 500;
-    font-size: 0.72rem;
+    font-weight: 600;
+    font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     background: var(--surface);
     border-bottom: 1px solid var(--border);
+    white-space: nowrap;
   }
 
   td {
     padding: 11px 14px;
     border-bottom: 1px solid rgba(42,48,69,0.5);
     vertical-align: middle;
+    color: var(--text);
   }
 
   tr:last-child td { border-bottom: none; }
-
   tr:hover td { background: rgba(255,255,255,0.02); }
 
   .pill {
@@ -360,440 +296,425 @@
     border-radius: 999px;
     font-weight: 600;
   }
+  .pill-green { background: rgba(74,222,128,0.15); color: var(--green); }
+  .pill-blue  { background: rgba(96,165,250,0.15); color: var(--blue); }
+  .pill-amber { background: rgba(245,158,11,0.15); color: var(--amber); }
 
-  .pill-green { background: rgba(74,222,128,0.15); color: var(--accent); }
-  .pill-blue { background: rgba(96,165,250,0.15); color: var(--accent2); }
-  .pill-amber { background: rgba(245,158,11,0.15); color: var(--accent3); }
-  .pill-red { background: rgba(248,113,113,0.15); color: var(--red); }
+  .stars { color: var(--amber); letter-spacing: 1px; }
+  .muted { color: var(--muted); font-size: 0.8rem; }
 
-  .stars {
-    color: var(--accent3);
-    letter-spacing: 1px;
+  .nav-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-bottom: 20px;
   }
-
-  @media (max-width: 600px) {
-    .stats-row { grid-template-columns: 1fr 1fr; }
-    .grid { grid-template-columns: 1fr; }
+  .nav-footer a {
+    font-size: 0.82rem;
+    color: #7b839a;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
   }
+  .nav-footer a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
 
 <header>
   <h1>Asher's College List</h1>
-  <p>9 Schools · Compared Across What Matters</p>
+  <p>8 Schools · The Final Cut · College Search 2028</p>
 </header>
 
-<div class="legend">
-  <div class="legend-item"><div class="dot dot-green"></div> Strong fit</div>
-  <div class="legend-item"><div class="dot dot-yellow"></div> Moderate fit</div>
-  <div class="legend-item"><div class="dot dot-red"></div> Gap / caveat</div>
+<!-- ══════════ TIER 1 ══════════ -->
+<div class="tier-header">
+  <span class="tier-badge tier-1">Tier 1 — Best All-Around Fits</span>
+  <div class="tier-line"></div>
 </div>
 
-<!-- TIER 1 -->
-<div class="tier-header">Tier 1 — Best All-Around Fits</div>
-<div class="grid">
-
-  <!-- LYNCHBURG -->
-  <div class="card">
-    <div class="card-header">
+<!-- 01 LYNCHBURG -->
+<div class="card">
+  <div class="card-top">
+    <div>
       <div class="school-num">01</div>
-      <div class="school-name">Univ. of Lynchburg</div>
-      <div class="school-location">Lynchburg, VA · Blue Ridge Mountains</div>
-      <span class="badge badge-d3">D3 Lacrosse</span>
+      <div class="school-name">University of Lynchburg</div>
+      <div class="school-loc">Lynchburg, VA · Blue Ridge Mountains</div>
     </div>
-    <div class="card-body">
-      <div class="stats-row">
-        <div class="stat"><div class="stat-label">Enrollment</div><div class="stat-value">~1,800</div></div>
-        <div class="stat"><div class="stat-label">Avg Net Price</div><div class="stat-value">~$23K/yr</div></div>
-        <div class="stat"><div class="stat-label">Acceptance</div><div class="stat-value">82%</div></div>
-        <div class="stat"><div class="stat-label">Drive from ATL</div><div class="stat-value">~6 hrs</div></div>
+    <span class="lax-badge lax-d3">D3 Varsity — Best Program ★</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~1,800</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$23K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">82%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">~6 hrs</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:80%"></div></div><span class="rating-score">4</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:80%"></div></div><span class="rating-score">4</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:60%"></div></div><span class="rating-score">3</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Best D3 lacrosse program on the list — 2015 national runner-up, multiple ODAC titles</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Players from Alpharetta and Roswell already on the roster — built-in local connection</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Most affordable net price of any private school on the list (~$23K/yr)</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Blue Ridge Mountains setting — hiking, camping, outdoor access</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Disciples of Christ affiliation — broadly Protestant, welcoming Christian culture</div>
       </div>
-      <div class="ratings">
-        <div class="rating-row">
-          <span class="rating-label">Outdoors</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:80%"></div></div>
-          <span class="rating-score">4</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Christian</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-blue" style="width:72%"></div></div>
-          <span class="rating-score">4</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Lacrosse</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-amber" style="width:100%"></div></div>
-          <span class="rating-score">5</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Academics</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:60%"></div></div>
-          <span class="rating-score">3</span>
-        </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>6-hour drive from Cumming — harder to visit, far from home</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Academics rated lower than some peers — not a highly selective school</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Outdoor culture is present but not as deeply embedded as Sewanee or App State</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Smaller city — Lynchburg doesn't have the college town energy of Greenville or Asheville</div>
       </div>
-      <div class="tags">
-        <span class="tag tag-highlight">2015 D3 National Runner-Up</span>
-        <span class="tag">Most Affordable</span>
-        <span class="tag">Disciples of Christ</span>
-        <span class="tag">Players from Alpharetta</span>
-      </div>
-      <div class="notes"><strong>Bottom line:</strong> Best lacrosse program on the list by far. Blue Ridge Mountains setting, most affordable net price, and there are already guys from the Alpharetta/Roswell area on the roster. Strong recruit pitch.</div>
-      <a class="card-link" href="https://www.lynchburg.edu" target="_blank">lynchburg.edu</a>
     </div>
   </div>
+  <div class="bottom-line"><strong>Bottom line:</strong> Best lacrosse program on the list by a wide margin. Blue Ridge setting, most affordable net price, and there are already guys from the Alpharetta/Roswell area on the roster. If lacrosse is a real priority, this is the first call Asher makes.</div>
+  <div class="card-footer"><a href="https://www.lynchburg.edu" target="_blank">lynchburg.edu</a></div>
+</div>
 
-  <!-- COLORADO COLLEGE -->
-  <div class="card">
-    <div class="card-header">
-      <div class="school-num">03</div>
+<!-- 02 COLORADO COLLEGE -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">02</div>
       <div class="school-name">Colorado College</div>
-      <div class="school-location">Colorado Springs, CO · Rocky Mountains</div>
-      <span class="badge badge-d3">D3 Lacrosse</span>
+      <div class="school-loc">Colorado Springs, CO · Rocky Mountains</div>
     </div>
-    <div class="card-body">
-      <div class="stats-row">
-        <div class="stat"><div class="stat-label">Enrollment</div><div class="stat-value">~2,100</div></div>
-        <div class="stat"><div class="stat-label">Avg Net Price</div><div class="stat-value">~$24K/yr</div></div>
-        <div class="stat"><div class="stat-label">Acceptance</div><div class="stat-value">~18%</div></div>
-        <div class="stat"><div class="stat-label">Distance</div><div class="stat-value">Flight</div></div>
+    <span class="lax-badge lax-d3">D3 Varsity Lacrosse</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~2,100</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$24K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">~18%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">Flight</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:40%"></div></div><span class="rating-score">2</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:60%"></div></div><span class="rating-score">3</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:100%"></div></div><span class="rating-score">5</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Block plan — one class at a time over 3.5 weeks. Unique, immersive, great for focused learners</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Best outdoor setting on the list — Pikes Peak, Rockies, skiing, hiking out the door</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>D3 lacrosse program, competitive academic environment</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Meets 100% of demonstrated financial need — nets down to ~$24K despite high sticker price</div>
       </div>
-      <div class="ratings">
-        <div class="rating-row">
-          <span class="rating-label">Outdoors</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:100%"></div></div>
-          <span class="rating-score">5</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Christian</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-blue" style="width:40%"></div></div>
-          <span class="rating-score">2</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Lacrosse</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-amber" style="width:60%"></div></div>
-          <span class="rating-score">3</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Academics</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:100%"></div></div>
-          <span class="rating-score">5</span>
-        </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>18% acceptance rate — most selective school on the list by a significant margin</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>No institutional Christian identity — secular liberal arts school</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Block plan is unconventional — not for everyone, worth really understanding before applying</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Flight required from Atlanta — no easy visits</div>
       </div>
-      <div class="tags">
-        <span class="tag tag-highlight">1 class at a time (block plan)</span>
-        <span class="tag">Pikes Peak access</span>
-        <span class="tag">Academically selective</span>
-        <span class="tag">Non-Christian</span>
-      </div>
-      <div class="notes"><strong>Bottom line:</strong> Most academically demanding on the list (18% acceptance). The block plan — one class per 3.5 weeks — is genuinely unique and suits focused, immersive learners. Outdoor lifestyle is unmatched. Lighter on Christian culture.</div>
-      <a class="card-link" href="https://www.coloradocollege.edu" target="_blank">coloradocollege.edu</a>
     </div>
   </div>
-
+  <div class="bottom-line"><strong>Bottom line:</strong> Most academically demanding on the list. The block plan suits focused, immersive learners and can work great for ADHD-wired students. Outdoor lifestyle is unmatched. Lighter on Christian culture — faith community would be self-driven.</div>
+  <div class="card-footer"><a href="https://www.coloradocollege.edu" target="_blank">coloradocollege.edu</a></div>
 </div>
 
-<!-- TIER 2 -->
-<div class="tier-header">Tier 2 — Strong with a Caveat</div>
-<div class="grid">
+<!-- ══════════ TIER 2 ══════════ -->
+<div class="tier-header">
+  <span class="tier-badge tier-2">Tier 2 — Strong with a Caveat</span>
+  <div class="tier-line"></div>
+</div>
 
-  <!-- WESTMONT -->
-  <div class="card">
-    <div class="card-header">
-      <div class="school-num">04</div>
+<!-- 03 WESTMONT -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">03</div>
       <div class="school-name">Westmont College</div>
-      <div class="school-location">Santa Barbara, CA · Pacific Coast + Mountains</div>
-      <span class="badge badge-club">Club Lacrosse</span>
+      <div class="school-loc">Santa Barbara, CA · Pacific Coast + Mountains</div>
     </div>
-    <div class="card-body">
-      <div class="stats-row">
-        <div class="stat"><div class="stat-label">Enrollment</div><div class="stat-value">~1,300</div></div>
-        <div class="stat"><div class="stat-label">Avg Net Price</div><div class="stat-value">~$38K/yr</div></div>
-        <div class="stat"><div class="stat-label">Acceptance</div><div class="stat-value">77%</div></div>
-        <div class="stat"><div class="stat-label">Distance</div><div class="stat-value">Flight</div></div>
+    <span class="lax-badge lax-club">Club Lacrosse Only</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~1,300</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$38K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">77%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">Flight</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:20%"></div></div><span class="rating-score">1</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:80%"></div></div><span class="rating-score">4</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Best physical setting of any school on the list — Santa Barbara mountains meet the Pacific Ocean</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Deeply evangelical Christian — faith is the heartbeat of campus culture</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Strong liberal arts academics, accessible admissions (77% acceptance)</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Surf, hiking, beaches, and mountains all within reach — outdoor lifestyle is genuine</div>
       </div>
-      <div class="ratings">
-        <div class="rating-row">
-          <span class="rating-label">Outdoors</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:100%"></div></div>
-          <span class="rating-score">5</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Christian</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-blue" style="width:88%"></div></div>
-          <span class="rating-score">5</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Lacrosse</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-amber" style="width:20%"></div></div>
-          <span class="rating-score">1</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Academics</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:80%"></div></div>
-          <span class="rating-score">4</span>
-        </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>No varsity lacrosse — club only, and it's not an established competitive program</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Most expensive school on the list after aid (~$38K/yr net)</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Flight required from Atlanta — Santa Barbara is a destination visit</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Very small (~1,300 students) — tight community, but limited in some ways</div>
       </div>
-      <div class="tags">
-        <span class="tag tag-highlight">Santa Barbara setting</span>
-        <span class="tag">Evangelical Christian</span>
-        <span class="tag">Mountains + Beach</span>
-        <span class="tag">Most Expensive</span>
-      </div>
-      <div class="notes"><strong>Bottom line:</strong> Best setting on the entire list — mountains meet the Pacific in Santa Barbara. Deeply Christian, strong liberal arts. Caveat: no varsity lacrosse, and sticker price is the highest of the group (net ~$38K after aid).</div>
-      <a class="card-link" href="https://www.westmont.edu" target="_blank">westmont.edu</a>
     </div>
   </div>
+  <div class="bottom-line"><strong>Bottom line:</strong> If Asher wants the strongest combination of Christian culture and outdoor lifestyle, Westmont is hard to beat. The lacrosse gap is real, but if that becomes a nice-to-have rather than a need, this moves to Tier 1 instantly.</div>
+  <div class="card-footer"><a href="https://www.westmont.edu" target="_blank">westmont.edu</a></div>
+</div>
 
-  <!-- GORDON -->
-  <div class="card">
-    <div class="card-header">
-      <div class="school-num">05</div>
+<!-- 04 GORDON -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">04</div>
       <div class="school-name">Gordon College</div>
-      <div class="school-location">Wenham, MA · North Shore Boston</div>
-      <span class="badge badge-d3">D3 Lacrosse</span>
+      <div class="school-loc">Wenham, MA · North Shore Boston</div>
     </div>
-    <div class="card-body">
-      <div class="stats-row">
-        <div class="stat"><div class="stat-label">Enrollment</div><div class="stat-value">~1,300</div></div>
-        <div class="stat"><div class="stat-label">Avg Net Price</div><div class="stat-value">~$25K/yr</div></div>
-        <div class="stat"><div class="stat-label">Acceptance</div><div class="stat-value">59%</div></div>
-        <div class="stat"><div class="stat-label">Distance</div><div class="stat-value">Flight</div></div>
+    <span class="lax-badge lax-d3">D3 Varsity Lacrosse</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~1,300</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$25K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">59%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">Flight</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:80%"></div></div><span class="rating-score">4</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:60%"></div></div><span class="rating-score">3</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:80%"></div></div><span class="rating-score">4</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Strong evangelical Christian identity — one of the best on the list for authentic faith culture</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>D3 varsity lacrosse — real program, real competition</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>North Shore Massachusetts — coastal trails, beaches, New England outdoors</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Boston proximity — great city access for a small school student</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Reasonable net price (~$25K) and solid academics</div>
       </div>
-      <div class="ratings">
-        <div class="rating-row">
-          <span class="rating-label">Outdoors</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:72%"></div></div>
-          <span class="rating-score">4</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Christian</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-blue" style="width:88%"></div></div>
-          <span class="rating-score">5</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Lacrosse</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-amber" style="width:60%"></div></div>
-          <span class="rating-score">3</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Academics</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:72%"></div></div>
-          <span class="rating-score">4</span>
-        </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Farthest school from home on the list — Boston is a real commitment distance-wise</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>New England winters are a significant lifestyle shift from Georgia</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Outdoor culture is coastal/hiking — no mountains, skiing, or adventure culture nearby</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Small school (~1,300) in a small town — social world can feel limited</div>
       </div>
-      <div class="tags">
-        <span class="tag tag-highlight">Coastal New England</span>
-        <span class="tag">Evangelical Christian</span>
-        <span class="tag">D3 Varsity Lacrosse</span>
-        <span class="tag">Farthest from Home</span>
-      </div>
-      <div class="notes"><strong>Bottom line:</strong> Underrated gem — strong Christian identity, D3 lacrosse, beaches and New England trails right there. Caveat: it's the farthest school from home (Boston), and New England winters are a real lifestyle shift from Georgia.</div>
-      <a class="card-link" href="https://www.gordon.edu" target="_blank">gordon.edu</a>
     </div>
   </div>
+  <div class="bottom-line"><strong>Bottom line:</strong> Underrated gem. Strong Christian identity, D3 lacrosse, coastal New England setting. The distance from home and the winter climate are the biggest hurdles. Worth a visit if Asher is open to the Northeast.</div>
+  <div class="card-footer"><a href="https://www.gordon.edu" target="_blank">gordon.edu</a></div>
+</div>
 
-  <!-- PALM BEACH ATLANTIC -->
-  <div class="card">
-    <div class="card-header">
+<!-- 05 PALM BEACH ATLANTIC -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">05</div>
+      <div class="school-name">Palm Beach Atlantic University</div>
+      <div class="school-loc">West Palm Beach, FL · Atlantic Coast</div>
+    </div>
+    <span class="lax-badge lax-d2">D2 Varsity Lacrosse</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~2,600</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$31K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">82%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">~8 hrs / Flight</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:80%"></div></div><span class="rating-score">4</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:80%"></div></div><span class="rating-score">4</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:60%"></div></div><span class="rating-score">3</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Only school combining varsity lacrosse + strong Christian culture + beach lifestyle</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Nondenominational Christian — chapel, faith culture woven into academics</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>D2 varsity lacrosse — step up from D3 athletically</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>West Palm Beach — surf, beach, warm weather year-round, vibrant city</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Manageable size (~2,600) with a tight campus community feel</div>
+      </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Outdoor culture is flat and coastal — no mountains, trails, or adventure culture</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>South Florida lifestyle is very specific — not for everyone</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Academic reputation not as strong as other schools on the list</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Long drive or flight from Cumming — harder to get home for weekends</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-line"><strong>Bottom line:</strong> Best fit if Asher's outdoor priorities lean toward surf, beach, and water culture over mountains and trails. Strong Christian culture, real D2 lacrosse. Biggest question is whether the flat Florida lifestyle matches what he's actually looking for.</div>
+  <div class="card-footer"><a href="https://www.pba.edu" target="_blank">pba.edu</a></div>
+</div>
+
+<!-- ══════════ TIER 3 ══════════ -->
+<div class="tier-header">
+  <span class="tier-badge tier-3">Tier 3 — Great Schools, Trade-offs</span>
+  <div class="tier-line"></div>
+</div>
+
+<!-- 06 APP STATE -->
+<div class="card">
+  <div class="card-top">
+    <div>
       <div class="school-num">06</div>
-      <div class="school-name">Palm Beach Atlantic</div>
-      <div class="school-location">West Palm Beach, FL · Atlantic Coast</div>
-      <span class="badge badge-d3">D2 Lacrosse</span>
+      <div class="school-name">Appalachian State University</div>
+      <div class="school-loc">Boone, NC · Blue Ridge Mountains at 3,300 ft</div>
     </div>
-    <div class="card-body">
-      <div class="stats-row">
-        <div class="stat"><div class="stat-label">Enrollment</div><div class="stat-value">~2,600</div></div>
-        <div class="stat"><div class="stat-label">Avg Net Price</div><div class="stat-value">~$31K/yr</div></div>
-        <div class="stat"><div class="stat-label">Acceptance</div><div class="stat-value">82%</div></div>
-        <div class="stat"><div class="stat-label">Drive from ATL</div><div class="stat-value">~8 hrs</div></div>
+    <span class="lax-badge lax-club">Club Lacrosse (MCLA, est. 1970s)</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~19,000</div></div>
+    <div class="stat-cell"><div class="stat-label">OOS Cost</div><div class="stat-value">~$43K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">90%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">~2.5 hrs ✓</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:40%"></div></div><span class="rating-score">2</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:60%"></div></div><span class="rating-score">3</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:60%"></div></div><span class="rating-score">3</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Best mountain outdoor setting close to home — Boone at 3,300 ft is the real deal</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Established club lacrosse since the 1970s — active, competitive MCLA program</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Only 2.5 hours from Cumming — easy visits, close to home</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Hiking, skiing, camping, whitewater — outdoor culture is genuinely baked in</div>
       </div>
-      <div class="ratings">
-        <div class="rating-row">
-          <span class="rating-label">Outdoors</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:72%"></div></div>
-          <span class="rating-score">4</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Christian</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-blue" style="width:88%"></div></div>
-          <span class="rating-score">5</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Lacrosse</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-amber" style="width:72%"></div></div>
-          <span class="rating-score">4</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Academics</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:60%"></div></div>
-          <span class="rating-score">3</span>
-        </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>No institutional Christian identity — public university, faith is entirely self-driven</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>19,000 students — very different college experience from smaller schools on the list</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Club lacrosse only — no varsity pathway, no athletic scholarship opportunity</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Out-of-state cost (~$43K) comparable to private schools without the private school benefits</div>
       </div>
-      <div class="tags">
-        <span class="tag tag-highlight">Beach / Coastal lifestyle</span>
-        <span class="tag">Nondenominational Christian</span>
-        <span class="tag">Varsity D2 Lacrosse</span>
-        <span class="tag">Flat terrain</span>
-      </div>
-      <div class="notes"><strong>Bottom line:</strong> Only school on the list with <em>varsity</em> lacrosse + strong Christian culture + beach lifestyle. Caveat: outdoor culture is flat/coastal — no mountains. Great fit if Asher's outdoors leans toward surf and water over trails and peaks.</div>
-      <a class="card-link" href="https://www.pba.edu" target="_blank">pba.edu</a>
     </div>
   </div>
-
+  <div class="bottom-line"><strong>Bottom line:</strong> Closest school to Atlanta with truly elite mountain outdoor culture. If Asher is open to a bigger school and building his own faith community, this is a compelling option — especially for an easy visit. The lack of Christian institutional identity is the biggest real gap.</div>
+  <div class="card-footer"><a href="https://www.appstate.edu" target="_blank">appstate.edu</a></div>
 </div>
 
-<!-- TIER 3 -->
-<div class="tier-header">Tier 3 — Great Schools, Trade-offs</div>
-<div class="grid">
-
-  <!-- APP STATE -->
-  <div class="card">
-    <div class="card-header">
+<!-- 07 GCU -->
+<div class="card">
+  <div class="card-top">
+    <div>
       <div class="school-num">07</div>
-      <div class="school-name">Appalachian State</div>
-      <div class="school-location">Boone, NC · Blue Ridge Mountains</div>
-      <span class="badge badge-club">Club Lacrosse</span>
+      <div class="school-name">Grand Canyon University</div>
+      <div class="school-loc">Phoenix, AZ · Sonoran Desert</div>
     </div>
-    <div class="card-body">
-      <div class="stats-row">
-        <div class="stat"><div class="stat-label">Enrollment</div><div class="stat-value">~19,000</div></div>
-        <div class="stat"><div class="stat-label">Out-of-State COA</div><div class="stat-value">~$43K/yr</div></div>
-        <div class="stat"><div class="stat-label">Acceptance</div><div class="stat-value">90%</div></div>
-        <div class="stat"><div class="stat-label">Drive from ATL</div><div class="stat-value">~2.5 hrs</div></div>
+    <span class="lax-badge lax-club">Club MCLA — 2× Nat'l Champions</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~25,000</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$22K</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">79%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">Flight</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:80%"></div></div><span class="rating-score">4</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:80%"></div></div><span class="rating-score">4</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:60%"></div></div><span class="rating-score">3</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>2× MCLA National Champions (2015, 2017) — one of the best club programs in the country</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Strongest institutional Christian culture on the entire list — chapel, community, faith-integrated</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Most affordable private Christian university on the list (~$22K net)</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Sedona, Grand Canyon, Flagstaff skiing — organized outdoor rec program takes students everywhere</div>
       </div>
-      <div class="ratings">
-        <div class="rating-row">
-          <span class="rating-label">Outdoors</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:100%"></div></div>
-          <span class="rating-score">5</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Christian</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-blue" style="width:40%"></div></div>
-          <span class="rating-score">2</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Lacrosse</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-amber" style="width:52%"></div></div>
-          <span class="rating-score">3</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Academics</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:60%"></div></div>
-          <span class="rating-score">3</span>
-        </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>25,000 students — by far the largest school on the list, very different feel</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Phoenix is flat and urban — outdoor culture requires leaving campus, not walking out the door</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Club lacrosse — no athletic scholarship pathway</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Flight required from Atlanta — expensive and time-consuming to get home</div>
       </div>
-      <div class="tags">
-        <span class="tag tag-highlight">Boone NC at 3,300 ft</span>
-        <span class="tag">MCLA Club Lacrosse</span>
-        <span class="tag">Public / Large</span>
-        <span class="tag">No Christian identity</span>
-      </div>
-      <div class="notes"><strong>Bottom line:</strong> Closest school to Atlanta with elite mountain outdoor culture. Lacrosse club established since 1970s. Big trade-off is no institutional Christian identity — faith community is self-driven. Also the biggest school on the list by far.</div>
-      <a class="card-link" href="https://www.appstate.edu" target="_blank">appstate.edu</a>
     </div>
   </div>
-
-  <!-- GCU -->
-  <div class="card">
-    <div class="card-header">
-      <div class="school-num">08</div>
-      <div class="school-name">Grand Canyon Univ.</div>
-      <div class="school-location">Phoenix, AZ · Sonoran Desert</div>
-      <span class="badge badge-club">Club Lacrosse</span>
-    </div>
-    <div class="card-body">
-      <div class="stats-row">
-        <div class="stat"><div class="stat-label">On-Campus Enroll.</div><div class="stat-value">~25,000</div></div>
-        <div class="stat"><div class="stat-label">Avg Net Price</div><div class="stat-value">~$22K/yr</div></div>
-        <div class="stat"><div class="stat-label">Acceptance</div><div class="stat-value">79%</div></div>
-        <div class="stat"><div class="stat-label">Distance</div><div class="stat-value">Flight</div></div>
-      </div>
-      <div class="ratings">
-        <div class="rating-row">
-          <span class="rating-label">Outdoors</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:72%"></div></div>
-          <span class="rating-score">4</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Christian</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-blue" style="width:88%"></div></div>
-          <span class="rating-score">5</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Lacrosse</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-amber" style="width:80%"></div></div>
-          <span class="rating-score">4</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Academics</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:52%"></div></div>
-          <span class="rating-score">3</span>
-        </div>
-      </div>
-      <div class="tags">
-        <span class="tag tag-highlight">2x MCLA National Champs</span>
-        <span class="tag">Most Affordable</span>
-        <span class="tag">D1 Sports Energy</span>
-        <span class="tag">Very Large Campus</span>
-      </div>
-      <div class="notes"><strong>Bottom line:</strong> Most affordable private Christian school on the list. Club lacrosse program won 2 national championships. Strong campus Christian culture. Outdoor rec program is organized and active. Trade-off: Phoenix is flat, and the school is massive (25K students).</div>
-      <a class="card-link" href="https://www.gcu.edu" target="_blank">gcu.edu</a>
-    </div>
-  </div>
-
-  <!-- MARS HILL -->
-  <div class="card">
-    <div class="card-header">
-      <div class="school-num">09</div>
-      <div class="school-name">Mars Hill University</div>
-      <div class="school-location">Mars Hill, NC · Blue Ridge Mountains (20 min from Asheville)</div>
-      <span class="badge badge-d3" style="background:rgba(96,165,250,0.15);color:#60a5fa;border-color:rgba(96,165,250,0.3);">D2 Varsity Lacrosse</span>
-    </div>
-    <div class="card-body">
-      <div class="stats-row">
-        <div class="stat"><div class="stat-label">Enrollment</div><div class="stat-value">~1,000</div></div>
-        <div class="stat"><div class="stat-label">Avg Net Price</div><div class="stat-value">~$20K/yr ⭐</div></div>
-        <div class="stat"><div class="stat-label">Acceptance</div><div class="stat-value">78%</div></div>
-        <div class="stat"><div class="stat-label">Drive from ATL</div><div class="stat-value">~2.5 hrs ✓</div></div>
-      </div>
-      <div class="ratings">
-        <div class="rating-row">
-          <span class="rating-label">Outdoors</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:100%"></div></div>
-          <span class="rating-score">5</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Christian</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-blue" style="width:88%"></div></div>
-          <span class="rating-score">5</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Lacrosse</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-amber" style="width:88%"></div></div>
-          <span class="rating-score">4</span>
-        </div>
-        <div class="rating-row">
-          <span class="rating-label">Academics</span>
-          <div class="rating-bar-wrap"><div class="rating-bar bar-green" style="width:52%"></div></div>
-          <span class="rating-score">3</span>
-        </div>
-      </div>
-      <div class="tags">
-        <span class="tag tag-highlight">Most affordable on list (~$20K net)</span>
-        <span class="tag">D2 Lacrosse w/ Scholarships</span>
-        <span class="tag">Baptist Christian (1856)</span>
-        <span class="tag">20 min to Asheville</span>
-        <span class="tag">⚠️ 35% 4-yr grad rate</span>
-      </div>
-      <div class="notes"><strong>Bottom line:</strong> Serious sleeper pick. D2 lacrosse with athletic scholarships available, deeply Baptist Christian, Blue Ridge Mountains with Asheville 20 minutes away — and by far the lowest net price on the list at ~$20K/yr. One honest flag: the 4-year graduation rate is only 35%, which is worth asking about on a visit. But if the vibe clicks, this checks almost every box.</div>
-      <a class="card-link" href="https://www.mhu.edu" target="_blank">mhu.edu</a>
-    </div>
-  </div>
-
+  <div class="bottom-line"><strong>Bottom line:</strong> Most affordable private Christian school on the list with legitimately elite club lacrosse. The size (25,000) is the biggest hesitation — it's a genuinely different college experience. If Asher wants big campus energy with strong Christian culture and competitive club lax, GCU delivers.</div>
+  <div class="card-footer"><a href="https://www.gcu.edu" target="_blank">gcu.edu</a></div>
 </div>
 
-<!-- SUMMARY TABLE -->
+<!-- 08 MARS HILL -->
+<div class="card">
+  <div class="card-top">
+    <div>
+      <div class="school-num">08</div>
+      <div class="school-name">Mars Hill University</div>
+      <div class="school-loc">Mars Hill, NC · Blue Ridge Mountains · 20 min from Asheville</div>
+    </div>
+    <span class="lax-badge lax-d2">D2 Varsity Lacrosse</span>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-label">Enrollment</div><div class="stat-value">~1,000</div></div>
+    <div class="stat-cell"><div class="stat-label">Est. Net/yr</div><div class="stat-value">~$20K ⭐</div></div>
+    <div class="stat-cell"><div class="stat-label">Acceptance</div><div class="stat-value">78%</div></div>
+    <div class="stat-cell"><div class="stat-label">Christian</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Outdoors</div><div class="stat-value">★★★★★</div></div>
+    <div class="stat-cell"><div class="stat-label">Drive from ATL</div><div class="stat-value">~2.5 hrs ✓</div></div>
+  </div>
+  <div class="card-body">
+    <div class="ratings-col">
+      <div class="rating-row"><span class="rating-label">Outdoors</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Christian</span><div class="rating-track"><div class="rating-fill fill-blue" style="width:100%"></div></div><span class="rating-score">5</span></div>
+      <div class="rating-row"><span class="rating-label">Lacrosse</span><div class="rating-track"><div class="rating-fill fill-green" style="width:80%"></div></div><span class="rating-score">4</span></div>
+      <div class="rating-row"><span class="rating-label">Academics</span><div class="rating-track"><div class="rating-fill fill-amber" style="width:60%"></div></div><span class="rating-score">3</span></div>
+    </div>
+    <div class="pros-cons-col">
+      <div class="pros-col">
+        <div class="pc-label">✓ Pros</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Lowest net price on the entire list (~$20K/yr) — 98% of students receive aid</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>D2 lacrosse with athletic scholarships potentially available</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Baptist Christian (founded 1856) — genuine, integrated faith culture</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Blue Ridge Mountains setting, 20 minutes from Asheville — incredible outdoors and city access</div>
+        <div class="pc-item"><div class="pc-dot dot-green"></div>Only 2.5 hours from Cumming — easy visits</div>
+      </div>
+      <div class="cons-col">
+        <div class="pc-label">✗ Cons</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>⚠️ 35% four-year graduation rate — significantly low, worth asking about on a visit</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Very small (~1,000 students) — can feel limiting, everyone knows everyone's business</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Academic reputation and resources are limited compared to other schools on the list</div>
+        <div class="pc-item"><div class="pc-dot dot-red"></div>Small town of Mars Hill itself — social life revolves around campus or Asheville</div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-line"><strong>Bottom line:</strong> The ultimate sleeper pick. Checks almost every box — D2 lacrosse with scholarship potential, Baptist Christian, Blue Ridge mountains, Asheville 20 minutes away, and the lowest price on the list. The 35% graduation rate is the one flag that needs a real answer before getting excited.</div>
+  <div class="card-footer"><a href="https://www.mhu.edu" target="_blank">mhu.edu</a></div>
+</div>
+
+<!-- ══════════ QUICK REFERENCE ══════════ -->
 <div class="summary-table">
   <h2>Quick Reference</h2>
   <div class="summary-table-scroll">
@@ -813,100 +734,100 @@
     </thead>
     <tbody>
       <tr>
-        <td>1</td>
+        <td class="muted">1</td>
         <td><strong>Lynchburg</strong></td>
-        <td>Lynchburg, VA</td>
+        <td class="muted">Lynchburg, VA</td>
         <td><span class="pill pill-green">D3 Varsity ⭐</span></td>
         <td><span class="stars">★★★★</span></td>
         <td><span class="stars">★★★★</span></td>
-        <td>1,800</td>
+        <td class="muted">1,800</td>
         <td>~$23K</td>
-        <td>6 hrs</td>
+        <td class="muted">6 hrs</td>
       </tr>
       <tr>
-        <td>2</td>
+        <td class="muted">2</td>
         <td><strong>Colorado College</strong></td>
-        <td>Colorado Springs, CO</td>
+        <td class="muted">Colorado Springs, CO</td>
         <td><span class="pill pill-green">D3 Varsity</span></td>
         <td><span class="stars">★★</span></td>
         <td><span class="stars">★★★★★</span></td>
-        <td>2,100</td>
+        <td class="muted">2,100</td>
         <td>~$24K</td>
-        <td>Flight</td>
+        <td class="muted">Flight</td>
       </tr>
       <tr>
-        <td>3</td>
+        <td class="muted">3</td>
         <td><strong>Westmont</strong></td>
-        <td>Santa Barbara, CA</td>
+        <td class="muted">Santa Barbara, CA</td>
         <td><span class="pill pill-amber">Club</span></td>
         <td><span class="stars">★★★★★</span></td>
         <td><span class="stars">★★★★★</span></td>
-        <td>1,300</td>
+        <td class="muted">1,300</td>
         <td>~$38K</td>
-        <td>Flight</td>
+        <td class="muted">Flight</td>
       </tr>
       <tr>
-        <td>4</td>
+        <td class="muted">4</td>
         <td><strong>Gordon College</strong></td>
-        <td>Wenham, MA</td>
+        <td class="muted">Wenham, MA</td>
         <td><span class="pill pill-green">D3 Varsity</span></td>
         <td><span class="stars">★★★★★</span></td>
         <td><span class="stars">★★★★</span></td>
-        <td>1,300</td>
+        <td class="muted">1,300</td>
         <td>~$25K</td>
-        <td>Flight</td>
+        <td class="muted">Flight</td>
       </tr>
       <tr>
-        <td>5</td>
+        <td class="muted">5</td>
         <td><strong>Palm Beach Atlantic</strong></td>
-        <td>West Palm Beach, FL</td>
+        <td class="muted">West Palm Beach, FL</td>
         <td><span class="pill pill-blue">D2 Varsity</span></td>
         <td><span class="stars">★★★★★</span></td>
         <td><span class="stars">★★★★</span></td>
-        <td>2,600</td>
+        <td class="muted">2,600</td>
         <td>~$31K</td>
-        <td>8 hrs / Flight</td>
+        <td class="muted">8 hrs / Flight</td>
       </tr>
       <tr>
-        <td>6</td>
+        <td class="muted">6</td>
         <td><strong>App State</strong></td>
-        <td>Boone, NC</td>
+        <td class="muted">Boone, NC</td>
         <td><span class="pill pill-amber">Club (MCLA)</span></td>
         <td><span class="stars">★★</span></td>
         <td><span class="stars">★★★★★</span></td>
-        <td>19,000</td>
+        <td class="muted">19,000</td>
         <td>~$43K OOS</td>
-        <td>2.5 hrs ✅</td>
+        <td class="muted">2.5 hrs ✅</td>
       </tr>
       <tr>
-        <td>7</td>
+        <td class="muted">7</td>
         <td><strong>GCU</strong></td>
-        <td>Phoenix, AZ</td>
-        <td><span class="pill pill-amber">Club (MCLA) 🏆🏆</span></td>
+        <td class="muted">Phoenix, AZ</td>
+        <td><span class="pill pill-amber">Club MCLA 🏆🏆</span></td>
         <td><span class="stars">★★★★★</span></td>
         <td><span class="stars">★★★★</span></td>
-        <td>25,000</td>
+        <td class="muted">25,000</td>
         <td>~$22K</td>
-        <td>Flight</td>
+        <td class="muted">Flight</td>
       </tr>
       <tr>
-        <td>8</td>
+        <td class="muted">8</td>
         <td><strong>Mars Hill</strong></td>
-        <td>Mars Hill, NC</td>
+        <td class="muted">Mars Hill, NC</td>
         <td><span class="pill pill-blue">D2 Varsity 🏆</span></td>
         <td><span class="stars">★★★★★</span></td>
         <td><span class="stars">★★★★★</span></td>
-        <td>1,000</td>
+        <td class="muted">1,000</td>
         <td>~$20K ⭐</td>
-        <td>2.5 hrs ✅</td>
+        <td class="muted">2.5 hrs ✅</td>
       </tr>
     </tbody>
   </table>
   </div>
 </div>
 
-<div style="text-align:center; margin-top: 40px; padding-bottom: 20px;">
-  <a href="index.html" style="font-size: 0.82rem; color: #7b839a; text-decoration: none; font-family: 'DM Sans', sans-serif;">← Back to College Search Home</a>
+<div class="nav-footer">
+  <a href="index.html">← Back to College Search Home</a>
 </div>
 
 </body>
